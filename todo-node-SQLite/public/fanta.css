@@ -129,10 +129,10 @@ body {
 /* Special */
 .text-gradient {
     -webkit-text-fill-color: transparent;
-    -webkit-background-clip: text;
+    background-clip: text;
     background-image: linear-gradient(135deg, var(--gradient-start) 0, var(--gradient-end) 100%);
     background-size: 100%;
-    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
 }
 
 
@@ -185,7 +185,7 @@ p {
 
 /* Content Sectioning */
 
-main {}
+/* main {}
 
 header {}
 
@@ -193,7 +193,7 @@ footer {}
 
 nav {}
 
-section {}
+section {} */
 
 address {
     font-style: normal;
@@ -237,20 +237,20 @@ dd {
     padding-bottom: 11px;
 }
 
-dl {}
+/* dl {} */
 
 dt {
     font-weight: bold;
 }
 
-figure {}
+/* figure {} */
 
 figcaption {
     padding-top: 10px;
     font-size: 0.8rem;
 }
 
-hr {}
+/* hr {} */
 
 
 ul,
@@ -403,7 +403,7 @@ button,
 select,
 optgroup,
 textarea {
-    /* margin: 0; */
+    margin: 0;
 }
 
 button,
