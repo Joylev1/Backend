@@ -1,5 +1,5 @@
 import { DatabaseSync } from "node:sqlite"
-const db = new DatabaseSync(":memory:")
+const db = new DatabaseSync(":memory:") // keeps the data in memory of the running server (data is lost if the server is closed/restarted)
 
 db.exec(`
     CREATE TABLE users (
