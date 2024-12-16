@@ -35,7 +35,7 @@ router.post("/login", (req, res) => {
     const { username, password } = req.body
     try {
         // checking if the user exist in the database or not
-        const loginUser = db.prepare(`SELECT * FROM users WHERE username= ?`) // * -> reads the table
+        const loginUser = db.prepare(`SELECT * FROM users WHERE username= ?`) // * -> reads all columns of the table
         const user = loginUser.get(username)
         if (!user) { res.status(404).send({ message: "user not found" }) }
 
