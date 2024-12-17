@@ -5,7 +5,7 @@ Content-Type: application/json
 
 {
     "username" : "testmail@gmail.com",
-    "password":  "123123123"
+    "password":  "123456789"
 }
 
 ###
@@ -15,5 +15,10 @@ Content-Type: application/json
 
 {
     "username" : "testmail@gmail.com",
-    "password":  "123123123"
+    "password":  "123456789"
 }
+
+
+###
+
+GET  http://localhost:3000/

@@ -26,3 +26,6 @@ router.put('/', (req, res) => {
 router.delete('/', (req, res) => {
 
 })
+
+
+export default router

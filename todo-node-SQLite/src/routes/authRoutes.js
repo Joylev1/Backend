@@ -46,7 +46,7 @@ router.post("/login", (req, res) => {
         // if everthing goes fine then 
         // token alocation
         const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: "24h" })
-
+        res.json({ token })
 
     } catch (err) {
         console.log(err.message)
