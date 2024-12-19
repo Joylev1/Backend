@@ -1,6 +1,6 @@
 ### sending requests 
 
-POST http://localhost:3000/auth/register
+POST http://localhost:3003/auth/register
 Content-Type: application/json
 
 {
@@ -10,7 +10,7 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:3000/auth/login
+POST http://localhost:3003/auth/login
 Content-Type: application/json
 
 {
@@ -21,4 +21,10 @@ Content-Type: application/json
 
 ###
 
-GET  http://localhost:3000/
+POST  http://localhost:3003/todos
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzM0NjIzNTQ4LCJleHAiOjE3MzQ3MDk5NDh9.UcvcYsOmDm44h8sOBwl9od2etOsMfD5gF0dE4W70Ru0
+Content-Type: application/json
+
+{
+    "task": "go to gym"
+}
