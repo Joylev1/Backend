@@ -12,6 +12,19 @@ router.get("/", (req, res) => {
 
 // for adding the todos 
 router.post('/', (req, res) => {
+    const { task } = req.body
+
+    if (!task) {
+        return res.status(400).json({ error: "Task is required" });
+    }
+    if (!req.userId) {
+        return res.status(401).json({ error: "Unauthorized: User ID is missing" });
+    }
+
+    const insertTodo = db.prepare(`INSERT INTO todos (user_id, task) VALUES (?, ?)`)
+    const result = insertTodo.run(req.userId, task)
+
+    res.json({ id: result.lastInsertRowid, task, completed: 0 })
 
 })
 
