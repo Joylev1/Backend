@@ -9,6 +9,8 @@ const router = express.Router()
 router.post("/register", (req, res) => {
     //const body = req.body
     const { username, password } = req.body
+    console.log("Registering user:", username);
+
     const hashedPass = bcrypt.hashSync(password, 8)
     try {
         const insertNewUser = db.prepare(`INSERT INTO users (username, password)
@@ -25,14 +27,16 @@ router.post("/register", (req, res) => {
         res.json({ token })
     }
     catch (err) {
-        console.log(err.message)
-        res.sendStatus(503)
+        console.error("Error during registration:", err.message);
+        res.status(503).send({ message: "Registration failed." });
     }
 })
 
 router.post("/login", (req, res) => {
 
     const { username, password } = req.body
+    console.log("Login attempt:", username);
+
     try {
         // checking if the user exist in the database or not
         const loginUser = db.prepare(`SELECT * FROM users WHERE username= ?`) // * -> reads all columns of the table
@@ -49,8 +53,8 @@ router.post("/login", (req, res) => {
         res.json({ token })
 
     } catch (err) {
-        console.log(err.message)
-        res.sendStatus(503)
+        console.error("Error during login:", err.message);
+        res.status(503).send({ message: "Login failed." });
     }
 
 })

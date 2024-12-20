@@ -17,9 +17,6 @@ router.post('/', (req, res) => {
     if (!task) {
         return res.status(400).json({ error: "Task is required" });
     }
-    if (!req.userId) {
-        return res.status(401).json({ error: "Unauthorized: User ID is missing" });
-    }
 
     const insertTodo = db.prepare(`INSERT INTO todos (user_id, task) VALUES (?, ?)`)
     const result = insertTodo.run(req.userId, task)
@@ -30,14 +27,28 @@ router.post('/', (req, res) => {
 
 
 // for updating the todos 
-router.put('/', (req, res) => {
+router.put('/:id', (req, res) => {
+    const { completed } = req.body
+    const { id } = req.params
+
+    const upadateTodo = db.prepare(`UPDATE todos SET completed = ? WHERE id = ?`)
+
+    upadateTodo.run(completed, id)
+
+    res.json({ message: " task completed" })
 
 })
 
 
 // for deleting the todos
-router.delete('/', (req, res) => {
+router.delete('/:id', (req, res) => {
+    const { id } = req.params
 
+    const deleteTodo = db.prepare(`DELETE FROM todos WHERE id = ? AND user_id = ?`)
+
+    deleteTodo.run(id, req.userId)
+
+    res.json({ message: "Todo Deleted!" })
 })
 
 
