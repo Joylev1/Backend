@@ -2,28 +2,44 @@ import express from "express"
 import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
 import db from "../db.js"
+import prisma from "../prismaClient.js"
+import { useAccordionButton } from "react-bootstrap"
 
 
 const router = express.Router()
 
-router.post("/register", (req, res) => {
+router.post("/register", async (req, res) => {
     //const body = req.body
     const { username, password } = req.body
     console.log("Registering user:", username);
 
     const hashedPass = bcrypt.hashSync(password, 8)
     try {
-        const insertNewUser = db.prepare(`INSERT INTO users (username, password)
-             VALUES (?, ?)`)
-        const result = insertNewUser.run(username, hashedPass)
+        // const insertNewUser = db.prepare(`INSERT INTO users (username, password)
+        //      VALUES (?, ?)`)
+        // const result = insertNewUser.run(username, hashedPass)
+
+        const newUser = await prisma.user.create({
+            data: {
+                username,
+                password: hashedPass
+            }
+        })
 
         // user created now we add a default todo 
         const defaultTodo = "Hey :) add your first Todo!"
-        const insertNewTodo = db.prepare(`INSERT INTO todos (user_id, task) VALUES (?, ?)`)
-        insertNewTodo.run(result.lastInsertRowid, defaultTodo)  // the result.lastinsertedrowid links the user_id to the result's id
+        // const insertNewTodo = db.prepare(`INSERT INTO todos (user_id, task) VALUES (?, ?)`)
+        // insertNewTodo.run(result.lastInsertRowid, defaultTodo)  // the result.lastinsertedrowid links the user_id to the result's id
+
+        prisma.todos.create({
+            data: {
+                defaultTodo,
+                userId: newUser.id
+            }
+        })
 
         // now for the token of the new user 
-        const token = jwt.sign({ id: result.lastInsertRowid }, process.env.JWT_SECRET, { expiresIn: '24h' });
+        const token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET, { expiresIn: '24h' });
         res.json({ token })
     }
     catch (err) {
@@ -32,16 +48,24 @@ router.post("/register", (req, res) => {
     }
 })
 
-router.post("/login", (req, res) => {
+router.post("/login", async (req, res) => {
 
     const { username, password } = req.body
     console.log("Login attempt:", username);
 
     try {
         // checking if the user exist in the database or not
-        const loginUser = db.prepare(`SELECT * FROM users WHERE username= ?`) // * -> reads all columns of the table
-        const user = loginUser.get(username)
-        if (!user) { res.status(404).send({ message: "user not found" }) }
+        // const loginUser = db.prepare(`SELECT * FROM users WHERE username= ?`) // * -> reads all columns of the table
+        // const user = loginUser.get(username)
+        // if (!user) { res.status(404).send({ message: "user not found" }) }
+
+        const loginUser = await prisma.user.find({
+            where: {
+                username: username
+            }
+        })
+
+        if (!loginUser) { return res.status(404).send({ message: "User not found" }) }
 
         // checking if the password is valid or not
         const validPass = bcrypt.compareSync(password, user.password)
