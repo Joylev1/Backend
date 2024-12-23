@@ -1,5 +1,4 @@
 import express from "express"
-import db from "../db.js"
 import prisma from "../prismaClient.js"
 
 
@@ -14,7 +13,6 @@ router.get("/", async (req, res) => {
             userId: req.userId
         }
     })
-
     res.json(todos)
 })
 
