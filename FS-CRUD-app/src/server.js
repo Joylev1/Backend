@@ -8,7 +8,7 @@ import authMiddleware from "./middleware/auth.js"
 
 const app = express()
 
-const PORT = process.env.PORT || 3003
+const PORT = process.env.PORT || 5003
 
 const __filename = fileURLToPath(import.meta.url)
 
